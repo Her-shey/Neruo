@@ -59,16 +59,17 @@ class MEGLoader():
             return self.datalist[
                 t:self.current_index], self.songlist[t:self.current_index]
     def get_batch_by_ind(self,batch_size,ind):
-      self.check()
-      current_index = ind*batch_size
-      if (current_index + batch_size) > self.get_n_sample():
-          t = current_index
-          current_index = 0
-          #epoch += 1
-          return self.datalist[t:], self.songlist[t:]
-          
-      else:
-          t = current_index
-          current_index += batch_size
-          return self.datalist[
-                t:self.current_index], self.songlist[t:self.current_index]    
+
+        current_index = ind*batch_size
+        if (self.current_index + batch_size) > self.get_len():
+            # angumentation
+            # self.iter_times+=1
+            t = self.current_index
+            self.current_index = 0
+            # self.epoch += 1
+            return self.datalist[t:], self.songlist[t:]
+        else:
+            t = self.current_index
+            self.current_index += batch_size
+            return self.datalist[
+                t:self.current_index], self.songlist[t:self.current_index]  
